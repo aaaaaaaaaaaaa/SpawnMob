@@ -284,6 +284,8 @@ public class CommandHandler{
     					return false;
         			boolean chk = false;
         			boolean endman = false;
+        			boolean hascolor = false;
+        		    String color = null;
         			for (int i = 0; i < count; i++)
         			{
         				m = MobHandling.spawnIt(mob, p, loc); 
@@ -294,14 +296,26 @@ public class CommandHandler{
         				if (mob.getName().toUpperCase() == "ENDERMAN"){
         					endman = true;
         				}
-        				if (split1.length == 2 || split1.length > 1 && mob.getName().toUpperCase() == "SLIME") 
-        				{
-        					MobHandling.setforSlime(p, loc, m, split1[1]);
-                        }
-        				if (split1.length == 2 || split1.length > 1 && mob.getName().toUpperCase() == "SHEEP") 
-        				{
-                        	    MobHandling.setforSheep(m, split1[1]);
-                        }
+        				if (split1.length == 2 || split1.length > 1) {
+        					if (mob.getName().toUpperCase() == "SLIME" || mob.getName().toUpperCase() == "SHEEP")
+        					{
+            					if (mob.getName().toUpperCase() == "SLIME") 
+                				{
+                					MobHandling.setforSlime(p, loc, m, split1[1]);
+                                }
+
+                				if (mob.getName().toUpperCase() == "SHEEP") 
+                				{
+                					    hascolor = true;
+                					    color = split1[1];
+                                	    MobHandling.setforSheep(m, split1[1]);
+                                }
+        					}  else if (!(mob.getName().toUpperCase() == "SLIME" || mob.getName().toUpperCase() == "SHEEP"))
+            					{
+            						p.sendMessage(ChatColor.RED + "You can't use a ':' like that!");
+            						return false;
+            					}
+        				}
 						if (split0.length == 2) {
 							mob2 = Mob.fromName(split0[1].equalsIgnoreCase("PigZombie") ? "PigZombie" : capitalCase(split0[1]));
 						    if (mob2 == null) {
@@ -314,9 +328,9 @@ public class CommandHandler{
         			}
         			
         			if (count == 1)
-        				p.sendMessage(ChatColor.BLUE + "You spawned a " + mob.getName().toLowerCase() + (split0.length == 2 ? " riding a " + mob2.getName().toLowerCase() : "") + "!");
+        				p.sendMessage(ChatColor.BLUE + "You spawned a " + (hascolor ? color : "") + mob.getName().toLowerCase() + (split0.length == 2 ? " riding a " + mob2.getName().toLowerCase() : "") + "!");
         			else
-        				p.sendMessage(ChatColor.BLUE + "You spawned " + args[1] + " " + (endman ? "endermen" : mob.getName().toLowerCase()) + (chk ? "" : mob.s) + (split0.length == 2 ? " riding " + mob2.getName().toLowerCase().toLowerCase() + mob2.s : "") + "!");
+        				p.sendMessage(ChatColor.BLUE + "You spawned " + args[1] + " " + (hascolor ? color : "") + (endman ? "endermen" : mob.getName().toLowerCase()) + (chk ? "" : mob.s) + (split0.length == 2 ? " riding " + mob2.getName().toLowerCase().toLowerCase() + mob2.s : "") + "!");
         			    
         		}
         		return true;
