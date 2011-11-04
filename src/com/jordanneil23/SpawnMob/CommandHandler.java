@@ -15,6 +15,7 @@ import org.bukkit.World;
 import org.bukkit.entity.CreatureType;
 import com.jordanneil23.SpawnMob.TargetBlock;
 
+
 /**
  *SpawnMob - Commands
  * @author jordanneil23
@@ -27,11 +28,11 @@ public class CommandHandler{
     }
     private String mobList[] = 
 	{ 
-    		"CaveSpider", "Chicken", "Cow", "Creeper",  "EnderMan", "Ghast", "Giant", "Monster", 
-    		"Pig", "PigZombie",	"Sheep", "SilverFish", "Skeleton", "Slime", "Spider", "Squid", 
-    		"Wolf", "Zombie"
+    		"CaveSpider, Chicken, Cow, Creeper, EnderMan, Ghast, Giant, Monster, ", 
+    		"Pig, PigZombie, Sheep, SilverFish, Skeleton, Slime, Spider, Squid, ", 
+    		"Wolf, Zombie"
 	}; 
-    private String customMobs[] = { "Wolf", "Creeper" };
+    private String customMobs[] = { "Wolf", "Creeper", "Sheep" };
 	@SuppressWarnings("rawtypes")
 	public static ArrayList mobs2 = new ArrayList();
 	
@@ -254,6 +255,43 @@ public class CommandHandler{
             				p.sendMessage(ChatColor.BLUE + "You spawned a" + (electric ? "n electric" : "") + " creeper" + (split0.length == 2 ? " riding " + mob2.getName().toLowerCase().toLowerCase() + mob2.s : "") + "!");
             			else
             				p.sendMessage(ChatColor.BLUE + "You spawned " + count + " " + (electric ? "electric " : "") + "creepers" + (split0.length == 2 ? " riding " + mob2.getName().toLowerCase().toLowerCase() + mob2.s : "") + "!");
+            		}else 
+            			if (args[0].equalsIgnoreCase("Sheep"))
+            		{
+            			boolean color = false;
+            			if (args.length >= 2 && (MobHandling.isColor(args[1]) == true))
+            			{
+            				color = true;
+            				count = args.length >= 3 ? convertStringtoInt(args[2]) : 1;
+            			}
+            			
+            				if(!(SpawnMob.playerhas(p, "spawnmob."   + (color ? "sheep.colors" : "sheep"), plugin.permissions) == true || SpawnMob.playerhas(p, "spawnmob.allmobs", plugin.permissions) == true || SpawnMob.playerhas(p, "spawnmob.*", plugin.permissions) == true)){
+            					p.sendMessage(ChatColor.RED + "You can't use this command.");
+                                return false;
+                            }
+            			
+        				if (!spawnCheck(p, count))
+        					return false;
+        				
+        				LivingEntity c = null;
+        				for (int i = 0; i < count; i++){
+            				MobHandling.setforSheep(p, loc, args[1], color);
+            				if (split0.length == 2) {
+            					mob2 = Mob.fromName(split0[1].equalsIgnoreCase("PigZombie") ? "PigZombie" : capitalCase(split0[1]));
+                                if (mob2 == null) {
+                                	p.sendMessage(ChatColor.RED + "Invalid mob type.");
+                                    return false;
+                                }
+                                rider = MobHandling.spawnRider(mob2, p, loc);
+                                rider.setPassenger(c);
+                                return true;
+                            }
+        				}
+        				
+            			if (count == 1)
+            				p.sendMessage(ChatColor.BLUE + "You spawned a" + (color ? "n " + args[2] + " " : "") + " sheep" + (split0.length == 2 ? " riding " + mob2.getName().toLowerCase().toLowerCase() + mob2.s : "") + "!");
+            			else
+            				p.sendMessage(ChatColor.BLUE + "You spawned " + count + " " + (color ? args[2] + " " : "") + "sheep" + (split0.length == 2 ? " riding " + mob2.getName().toLowerCase().toLowerCase() + mob2.s : "") + "!");
             		}
             	}
         		else
@@ -284,37 +322,30 @@ public class CommandHandler{
     					return false;
         			boolean chk = false;
         			boolean endman = false;
-        			boolean hascolor = false;
-        		    String color = null;
+        			boolean slime = false;
         			for (int i = 0; i < count; i++)
         			{
         				m = MobHandling.spawnIt(mob, p, loc); 
-        				if (mob.getName().toUpperCase() == "SHEEP" || mob.getName().toUpperCase() == "SILVERFISH" || mob.getName().toUpperCase() == "SQUID")
+        				if (mob.getName().toUpperCase() == "SILVERFISH" || mob.getName().toUpperCase() == "SQUID")
         				{
         					chk = true;
+        				}
+        				if (mob.getName().toUpperCase() == "SLIME")
+        				{
+        					slime = true;
         				}
         				if (mob.getName().toUpperCase() == "ENDERMAN"){
         					endman = true;
         				}
-        				if (split1.length == 2 || split1.length > 1) {
-        					if (mob.getName().toUpperCase() == "SLIME" || mob.getName().toUpperCase() == "SHEEP")
-        					{
-            					if (mob.getName().toUpperCase() == "SLIME") 
-                				{
-                					MobHandling.setforSlime(p, loc, m, split1[1]);
-                                }
-
-                				if (mob.getName().toUpperCase() == "SHEEP") 
-                				{
-                					    hascolor = true;
-                					    color = split1[1];
-                                	    MobHandling.setforSheep(m, split1[1]);
-                                }
-        					}  else if (!(mob.getName().toUpperCase() == "SLIME" || mob.getName().toUpperCase() == "SHEEP"))
-            					{
-            						p.sendMessage(ChatColor.RED + "You can't use a ':' like that!");
-            						return false;
-            					}
+        				if (slime == true && (split1.length == 2 || split1.length > 1)){
+        					if (mob.getName().toUpperCase() == "SLIME") 
+            				{
+            					MobHandling.setforSlime(p, loc, m, split1[1]);
+                            }
+        					else
+                            {
+                            	p.sendMessage("You can't use a ':' like that!");
+                            }
         				}
 						if (split0.length == 2) {
 							mob2 = Mob.fromName(split0[1].equalsIgnoreCase("PigZombie") ? "PigZombie" : capitalCase(split0[1]));
@@ -328,9 +359,9 @@ public class CommandHandler{
         			}
         			
         			if (count == 1)
-        				p.sendMessage(ChatColor.BLUE + "You spawned a " + (hascolor ? color : "") + mob.getName().toLowerCase() + (split0.length == 2 ? " riding a " + mob2.getName().toLowerCase() : "") + "!");
+        				p.sendMessage(ChatColor.BLUE + "You spawned a " + mob.getName().toLowerCase() + (split0.length == 2 ? " riding a " + mob2.getName().toLowerCase() : "") + "!");
         			else
-        				p.sendMessage(ChatColor.BLUE + "You spawned " + args[1] + " " + (hascolor ? color : "") + (endman ? "endermen" : mob.getName().toLowerCase()) + (chk ? "" : mob.s) + (split0.length == 2 ? " riding " + mob2.getName().toLowerCase().toLowerCase() + mob2.s : "") + "!");
+        				p.sendMessage(ChatColor.BLUE + "You spawned " + args[1] + " " + (endman ? "endermen" : mob.getName().toLowerCase()) + (chk ? "" : mob.s) + (split0.length == 2 ? " riding " + mob2.getName().toLowerCase().toLowerCase() + mob2.s : "") + "!");
         			    
         		}
         		return true;
@@ -388,7 +419,12 @@ public class CommandHandler{
             }
             else
             {
-            	CreatureType mt = CreatureType.fromName(args[0].substring(0,1).toUpperCase() + args[0].substring(1).toLowerCase());
+            	CreatureType mt = null;
+            	if (MobHandling.Check(args[0], p) != null){
+                	mt = MobHandling.Check(args[0], p);
+            	}else{
+            		mt = CreatureType.fromName(args[0].toUpperCase());
+            	}
                 if (mt == null)
                 {
                 	p.sendMessage(ChatColor.RED + "Creature type not found: " + args[0]);

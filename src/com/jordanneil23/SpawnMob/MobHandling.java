@@ -100,19 +100,36 @@ public class MobHandling {
 		slime.setSize(sz);
 		return;
 	}
-	/* Sheep Handling  */
-	public static void setforSheep(LivingEntity m, String args)
+	public static CreatureType Check(String m, Player p)
 	{
-		if (isColor(args) == true)
+		if (m.equalsIgnoreCase("Cave_Spider") || m.equalsIgnoreCase("CaveSpider") || m.equalsIgnoreCase("BlueSpider"))
 		{
-				dye = DyeColor.valueOf(args.toUpperCase());
-		} else {}
-		Sheep sheep = (Sheep) m;
-		sheep.setColor(dye);
-		return;
+			return CreatureType.CAVE_SPIDER;
+		}else
+			if (m.equalsIgnoreCase("Pig_Zombie") || m.equalsIgnoreCase("PigZombie") || m.equalsIgnoreCase("ZombiePig"))
+			{
+				return CreatureType.PIG_ZOMBIE;
+			}
+		return null;
+	}
+	/* Sheep Handling  */
+	public static void setforSheep(Player p, Location loc, String args, boolean hasclr)
+	{
+		World world = p.getWorld();
+		LivingEntity m = world.spawnCreature(loc, CreatureType.SHEEP);
+		if (hasclr == true){
+			if (isColor(args) == true)
+			{
+					dye = DyeColor.valueOf(args.toUpperCase());
+			} else {}
+			Sheep sheep = (Sheep) m;
+			sheep.setColor(dye);
+			return;
+		}
+			return;
 	}
 	/* Check for colors  */
-	 private static boolean isColor(String name)
+	 public static boolean isColor(String name)
 		{
 			for (String colors : sheepcolors)
 				if (colors.equalsIgnoreCase(name))
