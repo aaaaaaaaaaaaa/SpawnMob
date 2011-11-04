@@ -1,6 +1,12 @@
 This is the continuation of SpawnMob for Bukkit that was originally made/developed by xmlns.
 
 Changelog
+V1.9.9
+Fixed the "You can't use a ':' like that" error.
+Changed /spawnmob sheep:color amount to /spawnmob sheep color amount.
+Fixed slime spawning.
+fixed errors with /mspawn.
+
 V1.9.8_TEMPRELEASE
 This is a temp release, please don't nag me about errors/things not working.
 Broke colored sheep spawning it will display "You can't use a ':' like that" this is my fault and it will be fixed in the next release
