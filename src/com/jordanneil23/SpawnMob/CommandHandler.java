@@ -423,7 +423,7 @@ public class CommandHandler{
             	if (MobHandling.Check(args[0], p) != null){
                 	mt = MobHandling.Check(args[0], p);
             	}else{
-            		mt = CreatureType.fromName(args[0].toUpperCase());
+            		mt = CreatureType.fromName(args[0].substring(0,1).toUpperCase() + args[0].substring(1).toLowerCase());
             	}
                 if (mt == null)
                 {
