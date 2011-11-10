@@ -10,7 +10,6 @@ import org.bukkit.event.block.BlockListener;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-
 /**
  * SpawnMob - Block Listener
  * @author jordanneil23
@@ -29,7 +28,7 @@ public class SpawnerListener extends BlockListener{
 		 		if(block.getType() == Material.MOB_SPAWNER)
 		 {
 		 Player p = event.getPlayer();
-		 if (SpawnMob.Permissions.has(p, "spawnmob.mspawn.check"))
+		 if (PermissionsHandler.playerhas(p, "spawnmob.mspawn.check", SpawnMob.permissions))
 		 {
 		 	CreatureType mob = ((org.bukkit.block.CreatureSpawner) block.getState()).getCreatureType();
 		 	int del = ((org.bukkit.block.CreatureSpawner) block.getState()).getDelay();
