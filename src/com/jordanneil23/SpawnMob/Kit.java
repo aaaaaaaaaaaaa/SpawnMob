@@ -108,7 +108,7 @@ public class Kit {
 		        Set<Object> kits = props.keySet();
 		        kit2 = new ArrayList(Arrays.asList(kits)); 
 		        for (Iterator iter2 = kit2.iterator(); iter2.hasNext();){
-		        SpawnMob.sm1.setPerms(iter2.next().toString());
+		        PermissionsHandler.setPerms(iter2.next().toString());
 		        }
 		    } catch (IOException ioe) {
 		    	SpawnMob.sm1.log.info("[Spawnmob] ERROR: No kits.properties was found ");
