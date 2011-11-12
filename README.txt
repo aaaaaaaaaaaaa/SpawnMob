@@ -1,12 +1,6 @@
 This is the continuation of SpawnMob for Bukkit that was originally made/developed by xmlns.
 
 Changelog
-V2.0
-For Minecraft 1.9 Pre5
-Added support for PermissionsEX
-Added the Friendly plugin
-Added the new 1.9 mobs
-
 V1.9.9
 Fixed the "You can't use a ':' like that" error.
 Changed /spawnmob sheep:color amount to /spawnmob sheep color amount.

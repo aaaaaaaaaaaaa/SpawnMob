@@ -27,7 +27,7 @@ public class PListener extends PlayerListener{
 			 Block block = event.getClickedBlock();
 		 		if(block.getType() == Material.MOB_SPAWNER)
 		 {
-		 if (PermissionsHandler.playerhas(p, "spawnmob.mspawn.check", SpawnMob.permissions))
+		 if (SpawnMob.Permissions.has(p, "spawnmob.mspawn.check"))
 		 {
 		 	CreatureType mob = ((org.bukkit.block.CreatureSpawner) block.getState()).getCreatureType();
 		 	int del = ((org.bukkit.block.CreatureSpawner) block.getState()).getDelay();
